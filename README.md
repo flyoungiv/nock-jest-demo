@@ -9,4 +9,13 @@ The file `app/unfinishedService.js` contains a dummy API call that simulates wor
 
 When running unit tests, we would expect that our unit test in `app/serviceController.test.js` should fail, because the API call is to a fake endpoint: https://broken-api-does-not-work.com/get?foo1=bar1&foo2=bar2
 
-Notice that when running our unit tests with `npm run test`  we never actually hit the fake endpoint. Instead, `nock` intercepts the request and returns whatever data we specify.  This block in particular does the magic.
+Notice that when running our unit tests with `npm run test`  we never actually hit the fake endpoint. Instead, `nock` intercepts the request and returns whatever data we specify.  This block in particular does the magic:
+
+    nock('https://broken-api-does-not-work.com')
+    	.get('/get')
+    	.query(true)
+    	.reply(200, () => ({
+    		temp: '56',
+    		scale: 'F',
+    		zip: '78660'
+    	}))
